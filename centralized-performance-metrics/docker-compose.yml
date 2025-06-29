@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  centralized-performance-metrics:
+    build: .
+    container_name: centralized-performance-metrics
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka:8761/eureka/
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=performance_metrics
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=password
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PROMETHEUS_URL=http://prometheus:9090
+    depends_on:
+      - postgres
+      - redis
+      - eureka
+      - prometheus
+    networks:
+      - centralized-dashboard-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]  
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: centralized-performance-metrics-postgres
+    environment:
+      POSTGRES_DB: performance_metrics
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - centralized-dashboard-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: centralized-performance-metrics-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - centralized-dashboard-network
+      
+  eureka:
+    image: springcloud/eureka:latest
+    container_name: centralized-performance-metrics-eureka
+    ports:
+      - "8761:8761"
+    networks:
+      - centralized-dashboard-network
+      
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: centralized-performance-metrics-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - centralized-dashboard-network
+
+volumes:
+  postgres_data:
+
+networks:
+  centralized-dashboard-network:
+    driver: bridge

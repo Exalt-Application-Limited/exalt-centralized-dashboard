@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  centralized-dashboard-production:
+    build: .
+    container_name: centralized-dashboard-production
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+      - API_URL=http://api-gateway:8080
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+    networks:
+      - centralized-dashboard-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]  
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  redis:
+    image: redis:7-alpine
+    container_name: centralized-dashboard-production-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - centralized-dashboard-network
+
+  api-gateway:
+    image: api-gateway:latest
+    container_name: centralized-dashboard-production-api-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - centralized-dashboard-network
+
+volumes:
+  static_content:
+
+networks:
+  centralized-dashboard-network:
+    driver: bridge

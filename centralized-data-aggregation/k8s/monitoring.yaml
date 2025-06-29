@@ -1,0 +1,55 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: centralized-data-aggregation
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-data-aggregation
+    component: dashboard
+spec:
+  selector:
+    matchLabels:
+      app: centralized-data-aggregation
+  endpoints:
+  - port: management
+    path: /actuator/prometheus
+    interval: 30s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: centralized-data-aggregation-alerts
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-data-aggregation
+    component: dashboard
+spec:
+  groups:
+  - name: centralized-data-aggregation.rules
+    rules:
+    - alert: centralized-data-aggregationDown
+      expr: up{job="centralized-data-aggregation"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "centralized-data-aggregation is down"
+        description: "centralized-data-aggregation has been down for more than 1 minute."
+    
+    - alert: centralized-data-aggregationHighMemoryUsage
+      expr: (container_memory_usage_bytes{pod=~"centralized-data-aggregation-.*"} / container_spec_memory_limit_bytes) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "centralized-data-aggregation high memory usage"
+        description: "centralized-data-aggregation memory usage is above 90% for more than 5 minutes."
+    
+    - alert: centralized-data-aggregationHighCPUUsage
+      expr: (rate(container_cpu_usage_seconds_total{pod=~"centralized-data-aggregation-.*"}[5m]) / container_spec_cpu_quota) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "centralized-data-aggregation high CPU usage"
+        description: "centralized-data-aggregation CPU usage is above 90% for more than 5 minutes."

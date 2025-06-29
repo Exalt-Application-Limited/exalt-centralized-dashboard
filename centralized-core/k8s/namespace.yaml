@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: centralized-dashboard
+  labels:
+    name: centralized-dashboard
+    component: dashboard
+    environment: production
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: dashboard-limits
+  namespace: centralized-dashboard
+spec:
+  limits:
+  - default:
+      memory: "1Gi"
+      cpu: "500m"
+    defaultRequest:
+      memory: "256Mi"
+      cpu: "100m"
+    type: Container
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: dashboard-quota
+  namespace: centralized-dashboard
+spec:
+  hard:
+    requests.cpu: "4"
+    requests.memory: 8Gi
+    limits.cpu: "8"
+    limits.memory: 16Gi
+    persistentvolumeclaims: "10"
+    pods: "50"
+    services: "20"

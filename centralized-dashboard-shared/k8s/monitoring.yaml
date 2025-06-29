@@ -1,0 +1,55 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: centralized-dashboard-shared
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-dashboard-shared
+    component: dashboard
+spec:
+  selector:
+    matchLabels:
+      app: centralized-dashboard-shared
+  endpoints:
+  - port: management
+    path: /actuator/prometheus
+    interval: 30s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: centralized-dashboard-shared-alerts
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-dashboard-shared
+    component: dashboard
+spec:
+  groups:
+  - name: centralized-dashboard-shared.rules
+    rules:
+    - alert: centralized-dashboard-sharedDown
+      expr: up{job="centralized-dashboard-shared"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "centralized-dashboard-shared is down"
+        description: "centralized-dashboard-shared has been down for more than 1 minute."
+    
+    - alert: centralized-dashboard-sharedHighMemoryUsage
+      expr: (container_memory_usage_bytes{pod=~"centralized-dashboard-shared-.*"} / container_spec_memory_limit_bytes) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "centralized-dashboard-shared high memory usage"
+        description: "centralized-dashboard-shared memory usage is above 90% for more than 5 minutes."
+    
+    - alert: centralized-dashboard-sharedHighCPUUsage
+      expr: (rate(container_cpu_usage_seconds_total{pod=~"centralized-dashboard-shared-.*"}[5m]) / container_spec_cpu_quota) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "centralized-dashboard-shared high CPU usage"
+        description: "centralized-dashboard-shared CPU usage is above 90% for more than 5 minutes."

@@ -1,0 +1,55 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: centralized-real-time-data
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-real-time-data
+    component: dashboard
+spec:
+  selector:
+    matchLabels:
+      app: centralized-real-time-data
+  endpoints:
+  - port: management
+    path: /actuator/prometheus
+    interval: 30s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: centralized-real-time-data-alerts
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-real-time-data
+    component: dashboard
+spec:
+  groups:
+  - name: centralized-real-time-data.rules
+    rules:
+    - alert: centralized-real-time-dataDown
+      expr: up{job="centralized-real-time-data"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "centralized-real-time-data is down"
+        description: "centralized-real-time-data has been down for more than 1 minute."
+    
+    - alert: centralized-real-time-dataHighMemoryUsage
+      expr: (container_memory_usage_bytes{pod=~"centralized-real-time-data-.*"} / container_spec_memory_limit_bytes) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "centralized-real-time-data high memory usage"
+        description: "centralized-real-time-data memory usage is above 90% for more than 5 minutes."
+    
+    - alert: centralized-real-time-dataHighCPUUsage
+      expr: (rate(container_cpu_usage_seconds_total{pod=~"centralized-real-time-data-.*"}[5m]) / container_spec_cpu_quota) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "centralized-real-time-data high CPU usage"
+        description: "centralized-real-time-data CPU usage is above 90% for more than 5 minutes."

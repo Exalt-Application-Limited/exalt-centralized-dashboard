@@ -1,0 +1,55 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: centralized-dashboard-production
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-dashboard-production
+    component: dashboard
+spec:
+  selector:
+    matchLabels:
+      app: centralized-dashboard-production
+  endpoints:
+  - port: management
+    path: /actuator/prometheus
+    interval: 30s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: centralized-dashboard-production-alerts
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-dashboard-production
+    component: dashboard
+spec:
+  groups:
+  - name: centralized-dashboard-production.rules
+    rules:
+    - alert: centralized-dashboard-productionDown
+      expr: up{job="centralized-dashboard-production"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "centralized-dashboard-production is down"
+        description: "centralized-dashboard-production has been down for more than 1 minute."
+    
+    - alert: centralized-dashboard-productionHighMemoryUsage
+      expr: (container_memory_usage_bytes{pod=~"centralized-dashboard-production-.*"} / container_spec_memory_limit_bytes) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "centralized-dashboard-production high memory usage"
+        description: "centralized-dashboard-production memory usage is above 90% for more than 5 minutes."
+    
+    - alert: centralized-dashboard-productionHighCPUUsage
+      expr: (rate(container_cpu_usage_seconds_total{pod=~"centralized-dashboard-production-.*"}[5m]) / container_spec_cpu_quota) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "centralized-dashboard-production high CPU usage"
+        description: "centralized-dashboard-production CPU usage is above 90% for more than 5 minutes."

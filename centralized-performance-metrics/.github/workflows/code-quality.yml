@@ -1,0 +1,73 @@
+name: Code Quality Check - centralized-performance-metrics
+
+on:
+  push:
+    branches: [ main, dev, feature/* ]
+  pull_request:
+    branches: [ main, dev ]
+
+env:
+  JAVA_VERSION: '17'
+  SERVICE_NAME: centralized-performance-metrics
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'temurin'
+        
+    - name: Cache SonarCloud packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
+        
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+        
+    - name: Run SpotBugs
+      run: mvn spotbugs:check
+      working-directory: centralized-dashboard/centralized-performance-metrics
+      
+    - name: Run Checkstyle
+      run: mvn checkstyle:check
+      working-directory: centralized-dashboard/centralized-performance-metrics
+      
+    - name: Run PMD
+      run: mvn pmd:check
+      working-directory: centralized-dashboard/centralized-performance-metrics
+      
+    - name: Analyze with SonarCloud
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: mvn verify sonar:sonar -Dsonar.projectKey=exalt_centralized-performance-metrics
+      working-directory: centralized-dashboard/centralized-performance-metrics
+      
+    - name: Check code coverage
+      run: |
+        mvn jacoco:report
+        echo "Code coverage report generated"
+      working-directory: centralized-dashboard/centralized-performance-metrics
+      
+    - name: Upload code coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: centralized-dashboard/centralized-performance-metrics/target/site/jacoco/jacoco.xml
+        flags: unittests
+        name: codecov-centralized-performance-metrics

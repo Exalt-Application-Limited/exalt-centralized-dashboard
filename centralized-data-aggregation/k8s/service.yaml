@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: centralized-data-aggregation
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-data-aggregation
+spec:
+  selector:
+    app: centralized-data-aggregation
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http

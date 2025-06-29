@@ -1,0 +1,55 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: centralized-performance-metrics
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-performance-metrics
+    component: dashboard
+spec:
+  selector:
+    matchLabels:
+      app: centralized-performance-metrics
+  endpoints:
+  - port: management
+    path: /actuator/prometheus
+    interval: 30s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: centralized-performance-metrics-alerts
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-performance-metrics
+    component: dashboard
+spec:
+  groups:
+  - name: centralized-performance-metrics.rules
+    rules:
+    - alert: centralized-performance-metricsDown
+      expr: up{job="centralized-performance-metrics"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "centralized-performance-metrics is down"
+        description: "centralized-performance-metrics has been down for more than 1 minute."
+    
+    - alert: centralized-performance-metricsHighMemoryUsage
+      expr: (container_memory_usage_bytes{pod=~"centralized-performance-metrics-.*"} / container_spec_memory_limit_bytes) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "centralized-performance-metrics high memory usage"
+        description: "centralized-performance-metrics memory usage is above 90% for more than 5 minutes."
+    
+    - alert: centralized-performance-metricsHighCPUUsage
+      expr: (rate(container_cpu_usage_seconds_total{pod=~"centralized-performance-metrics-.*"}[5m]) / container_spec_cpu_quota) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "centralized-performance-metrics high CPU usage"
+        description: "centralized-performance-metrics CPU usage is above 90% for more than 5 minutes."

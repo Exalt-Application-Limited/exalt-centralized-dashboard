@@ -1,0 +1,38 @@
+{
+  "service": "centralized-dashboard-staging",
+  "defaultLanguage": "en",
+  "supportedLanguages": ["en", "fr", "de", "es", "ar"],
+  "fallbackLanguage": "en",
+  "encoding": "UTF-8",
+  "dateFormat": {
+    "en": "MM/dd/yyyy HH:mm:ss",
+    "fr": "dd/MM/yyyy HH:mm:ss",
+    "de": "dd.MM.yyyy HH:mm:ss",
+    "es": "dd/MM/yyyy HH:mm:ss",
+    "ar": "yyyy/MM/dd HH:mm:ss"
+  },
+  "numberFormat": {
+    "en": {"decimal": ".", "thousands": ","},
+    "fr": {"decimal": ",", "thousands": " "},
+    "de": {"decimal": ",", "thousands": "."},
+    "es": {"decimal": ",", "thousands": "."},
+    "ar": {"decimal": "٫", "thousands": "٬"}
+  },
+  "currency": {
+    "en": "USD",
+    "fr": "EUR",
+    "de": "EUR",
+    "es": "EUR",
+    "ar": "USD"
+  },
+  "rtl": {
+    "ar": true
+  },
+  "timezone": {
+    "en": "America/New_York",
+    "fr": "Europe/Paris",
+    "de": "Europe/Berlin",
+    "es": "Europe/Madrid",
+    "ar": "Asia/Dubai"
+  }
+}

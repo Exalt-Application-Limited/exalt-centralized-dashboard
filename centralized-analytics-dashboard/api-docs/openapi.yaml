@@ -1,0 +1,735 @@
+openapi: 3.0.3
+info:
+  title: Centralized Analytics Dashboard API
+  description: |
+    API documentation for the Centralized Analytics Dashboard frontend application.
+    This React-based dashboard serves as the primary business intelligence interface
+    for the Social E-commerce Ecosystem, providing comprehensive visual analytics
+    and insights across all business domains.
+    
+    **Key Features:**
+    - Multi-domain data visualization
+    - Real-time analytics updates
+    - Interactive dashboards and charts
+    - Multi-language support
+    - Responsive design for all devices
+    
+  version: 1.2.3
+  contact:
+    name: Analytics Dashboard Team
+    email: analytics-dashboard@exalt.com
+    url: https://analytics.dashboard.exalt.com/support
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://analytics.dashboard.exalt.com
+    description: Production environment
+  - url: https://staging-analytics.dashboard.exalt.com  
+    description: Staging environment
+  - url: https://dev-analytics.dashboard.exalt.com
+    description: Development environment
+  - url: http://localhost:3000
+    description: Local development
+
+paths:
+  /health:
+    get:
+      summary: Application health check
+      description: Returns the health status of the frontend application
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Application is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+                  version:
+                    type: string
+                    example: "1.2.3"
+                  build:
+                    type: string
+                    example: "abc123"
+        '503':
+          description: Application is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/config:
+    get:
+      summary: Get application configuration
+      description: Returns runtime configuration for the frontend application
+      tags:
+        - Configuration
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Application configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppConfig'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/dashboard/metrics:
+    get:
+      summary: Get dashboard metrics
+      description: Retrieve key performance indicators and metrics for dashboard display
+      tags:
+        - Dashboard
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: domain
+          in: query
+          description: Filter metrics by business domain
+          schema:
+            type: string
+            enum: [social-commerce, warehousing, courier-services, all]
+            default: all
+        - name: timeframe
+          in: query
+          description: Time range for metrics
+          schema:
+            type: string
+            enum: [1h, 6h, 24h, 7d, 30d]
+            default: 24h
+        - name: refresh
+          in: query
+          description: Force refresh of cached data
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Dashboard metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardMetrics'
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/analytics/charts:
+    get:
+      summary: Get chart data
+      description: Retrieve data for various chart components
+      tags:
+        - Analytics
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: chartType
+          in: query
+          required: true
+          description: Type of chart data to retrieve
+          schema:
+            type: string
+            enum: [sales, orders, inventory, shipping, users, revenue]
+        - name: granularity
+          in: query
+          description: Data granularity
+          schema:
+            type: string
+            enum: [hour, day, week, month]
+            default: day
+        - name: startDate
+          in: query
+          description: Start date for data range
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: End date for data range
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Chart data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChartData'
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/realtime/subscribe:
+    post:
+      summary: Subscribe to real-time updates
+      description: Register for real-time data updates via WebSocket
+      tags:
+        - Real-time
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionRequest'
+      responses:
+        '200':
+          description: Successfully subscribed to real-time updates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscriptionId:
+                    type: string
+                    example: "sub_123456"
+                  websocketUrl:
+                    type: string
+                    example: "wss://analytics.dashboard.exalt.com/ws"
+                  topics:
+                    type: array
+                    items:
+                      type: string
+        '400':
+          description: Invalid subscription request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/user/preferences:
+    get:
+      summary: Get user preferences
+      description: Retrieve user-specific dashboard preferences
+      tags:
+        - User
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User preferences retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferences'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Update user preferences
+      description: Update user-specific dashboard preferences
+      tags:
+        - User
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPreferences'
+      responses:
+        '200':
+          description: User preferences updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferences'
+        '400':
+          description: Invalid preferences data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/reports/export:
+    post:
+      summary: Export dashboard report
+      description: Generate and export dashboard reports in various formats
+      tags:
+        - Reports
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportRequest'
+      responses:
+        '200':
+          description: Report export initiated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exportId:
+                    type: string
+                    example: "exp_123456"
+                  status:
+                    type: string
+                    example: "processing"
+                  estimatedCompletionTime:
+                    type: string
+                    format: date-time
+        '400':
+          description: Invalid export request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/analytics/events:
+    post:
+      summary: Track analytics event
+      description: Send custom analytics events from the frontend
+      tags:
+        - Analytics
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyticsEvent'
+      responses:
+        '200':
+          description: Analytics event tracked successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  eventId:
+                    type: string
+                    example: "evt_123456"
+                  status:
+                    type: string
+                    example: "tracked"
+        '400':
+          description: Invalid event data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from authentication service
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code
+        timestamp:
+          type: string
+          format: date-time
+        path:
+          type: string
+          description: Request path that caused the error
+      required:
+        - error
+        - code
+        - timestamp
+
+    AppConfig:
+      type: object
+      properties:
+        apiBaseUrl:
+          type: string
+          example: "https://api.dashboard.exalt.com"
+        wsBaseUrl:
+          type: string
+          example: "wss://ws.dashboard.exalt.com"
+        enableRealTime:
+          type: boolean
+          example: true
+        supportedLanguages:
+          type: array
+          items:
+            type: string
+          example: ["en", "fr", "de", "es", "ar"]
+        defaultLanguage:
+          type: string
+          example: "en"
+        features:
+          type: object
+          properties:
+            advancedCharts:
+              type: boolean
+            exportReports:
+              type: boolean
+            realTimeAlerts:
+              type: boolean
+        version:
+          type: string
+          example: "1.2.3"
+
+    DashboardMetrics:
+      type: object
+      properties:
+        summary:
+          type: object
+          properties:
+            totalRevenue:
+              type: number
+              example: 1250000.50
+            totalOrders:
+              type: integer
+              example: 15420
+            activeUsers:
+              type: integer
+              example: 8340
+            averageOrderValue:
+              type: number
+              example: 156.75
+        domains:
+          type: object
+          properties:
+            socialCommerce:
+              $ref: '#/components/schemas/DomainMetrics'
+            warehousing:
+              $ref: '#/components/schemas/DomainMetrics'
+            courierServices:
+              $ref: '#/components/schemas/DomainMetrics'
+        trends:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrendData'
+        lastUpdated:
+          type: string
+          format: date-time
+
+    DomainMetrics:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Social Commerce"
+        revenue:
+          type: number
+          example: 650000.25
+        orders:
+          type: integer
+          example: 8500
+        growth:
+          type: number
+          description: Percentage growth
+          example: 12.5
+        status:
+          type: string
+          enum: [healthy, warning, critical]
+          example: "healthy"
+
+    TrendData:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        metric:
+          type: string
+          example: "revenue"
+        value:
+          type: number
+          example: 125000.50
+        change:
+          type: number
+          description: Change from previous period
+          example: 5.2
+
+    ChartData:
+      type: object
+      properties:
+        chartType:
+          type: string
+          example: "sales"
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              x:
+                type: string
+                description: X-axis value (usually timestamp)
+              y:
+                type: number
+                description: Y-axis value
+              label:
+                type: string
+                description: Data point label
+        metadata:
+          type: object
+          properties:
+            title:
+              type: string
+              example: "Sales Performance"
+            unit:
+              type: string
+              example: "USD"
+            granularity:
+              type: string
+              example: "day"
+            dateRange:
+              type: object
+              properties:
+                start:
+                  type: string
+                  format: date
+                end:
+                  type: string
+                  format: date
+
+    SubscriptionRequest:
+      type: object
+      properties:
+        topics:
+          type: array
+          items:
+            type: string
+          example: ["dashboard.metrics", "orders.updates", "inventory.alerts"]
+        filters:
+          type: object
+          properties:
+            domains:
+              type: array
+              items:
+                type: string
+            regions:
+              type: array
+              items:
+                type: string
+        options:
+          type: object
+          properties:
+            bufferSize:
+              type: integer
+              example: 100
+            heartbeatInterval:
+              type: integer
+              example: 30000
+      required:
+        - topics
+
+    UserPreferences:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "user_123456"
+        language:
+          type: string
+          example: "en"
+        timezone:
+          type: string
+          example: "UTC"
+        theme:
+          type: string
+          enum: [light, dark, auto]
+          example: "light"
+        dashboardLayout:
+          type: array
+          items:
+            type: object
+            properties:
+              widgetId:
+                type: string
+              position:
+                type: object
+                properties:
+                  x:
+                    type: integer
+                  y:
+                    type: integer
+                  width:
+                    type: integer
+                  height:
+                    type: integer
+        notifications:
+          type: object
+          properties:
+            email:
+              type: boolean
+              example: true
+            browser:
+              type: boolean
+              example: true
+            realTime:
+              type: boolean
+              example: true
+        refreshInterval:
+          type: integer
+          description: Auto-refresh interval in seconds
+          example: 300
+
+    ExportRequest:
+      type: object
+      properties:
+        reportType:
+          type: string
+          enum: [dashboard, analytics, performance, custom]
+          example: "dashboard"
+        format:
+          type: string
+          enum: [pdf, excel, csv, json]
+          example: "pdf"
+        dateRange:
+          type: object
+          properties:
+            start:
+              type: string
+              format: date
+            end:
+              type: string
+              format: date
+        filters:
+          type: object
+          properties:
+            domains:
+              type: array
+              items:
+                type: string
+            regions:
+              type: array
+              items:
+                type: string
+            metrics:
+              type: array
+              items:
+                type: string
+        options:
+          type: object
+          properties:
+            includeCharts:
+              type: boolean
+              example: true
+            compression:
+              type: boolean
+              example: false
+            emailDelivery:
+              type: boolean
+              example: false
+      required:
+        - reportType
+        - format
+
+    AnalyticsEvent:
+      type: object
+      properties:
+        eventType:
+          type: string
+          enum: [page_view, user_interaction, error, performance]
+          example: "user_interaction"
+        eventName:
+          type: string
+          example: "chart_clicked"
+        properties:
+          type: object
+          additionalProperties: true
+          example:
+            chartType: "sales"
+            timeframe: "7d"
+            userId: "user_123"
+        timestamp:
+          type: string
+          format: date-time
+        sessionId:
+          type: string
+          example: "session_789"
+        userId:
+          type: string
+          example: "user_123"
+      required:
+        - eventType
+        - eventName
+
+tags:
+  - name: Health
+    description: Application health and status endpoints
+  - name: Configuration
+    description: Application configuration management
+  - name: Dashboard
+    description: Dashboard data and metrics
+  - name: Analytics
+    description: Analytics data and event tracking
+  - name: Real-time
+    description: Real-time data subscriptions
+  - name: User
+    description: User preferences and settings
+  - name: Reports
+    description: Report generation and export

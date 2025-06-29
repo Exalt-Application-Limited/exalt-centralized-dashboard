@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: centralized-performance-metrics
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-performance-metrics
+spec:
+  selector:
+    app: centralized-performance-metrics
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http

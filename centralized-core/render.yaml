@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: centralized-core
+    env: docker
+    region: oregon
+    plan: starter
+    branch: main
+    buildCommand: |
+      if [ -f "pom.xml" ]; then
+        mvn clean package -DskipTests
+      else
+        npm ci && npm run build
+      fi
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: staging
+      - key: NODE_ENV
+        value: staging

@@ -1,0 +1,70 @@
+name: Build centralized-real-time-data Service
+
+on:
+  push:
+    branches: [ main, dev, feature/* ]
+  pull_request:
+    branches: [ main, dev ]
+
+env:
+  JAVA_VERSION: '17'
+  MAVEN_VERSION: '3.9.6'
+  SERVICE_NAME: centralized-real-time-data
+  DOCKER_REGISTRY: ghcr.io
+  DOCKER_IMAGE: ghcr.io/${{ github.repository_owner }}/centralized-real-time-data
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'temurin'
+        
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+        
+    - name: Build with Maven
+      run: mvn clean compile
+      working-directory: centralized-dashboard/centralized-real-time-data
+      
+    - name: Package application
+      run: mvn package -DskipTests
+      working-directory: centralized-dashboard/centralized-real-time-data
+      
+    - name: Build Docker image
+      run: |
+        docker build -t ${{ env.DOCKER_IMAGE }}:${{ github.sha }} .
+        docker tag ${{ env.DOCKER_IMAGE }}:${{ github.sha }} ${{ env.DOCKER_IMAGE }}:latest
+      working-directory: centralized-dashboard/centralized-real-time-data
+        
+    - name: Log in to Docker Registry
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.DOCKER_REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Push Docker image
+      if: github.event_name != 'pull_request'
+      run: |
+        docker push ${{ env.DOCKER_IMAGE }}:${{ github.sha }}
+        docker push ${{ env.DOCKER_IMAGE }}:latest
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: centralized-dashboard/centralized-real-time-data/target/
+        retention-days: 7

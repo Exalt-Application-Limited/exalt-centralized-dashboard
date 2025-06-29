@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: centralized-real-time-data
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-real-time-data
+spec:
+  selector:
+    app: centralized-real-time-data
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http

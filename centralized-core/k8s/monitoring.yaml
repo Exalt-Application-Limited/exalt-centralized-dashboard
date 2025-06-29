@@ -1,0 +1,55 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: centralized-core
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-core
+    component: dashboard
+spec:
+  selector:
+    matchLabels:
+      app: centralized-core
+  endpoints:
+  - port: management
+    path: /actuator/prometheus
+    interval: 30s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: centralized-core-alerts
+  namespace: centralized-dashboard
+  labels:
+    app: centralized-core
+    component: dashboard
+spec:
+  groups:
+  - name: centralized-core.rules
+    rules:
+    - alert: centralized-coreDown
+      expr: up{job="centralized-core"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "centralized-core is down"
+        description: "centralized-core has been down for more than 1 minute."
+    
+    - alert: centralized-coreHighMemoryUsage
+      expr: (container_memory_usage_bytes{pod=~"centralized-core-.*"} / container_spec_memory_limit_bytes) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "centralized-core high memory usage"
+        description: "centralized-core memory usage is above 90% for more than 5 minutes."
+    
+    - alert: centralized-coreHighCPUUsage
+      expr: (rate(container_cpu_usage_seconds_total{pod=~"centralized-core-.*"}[5m]) / container_spec_cpu_quota) > 0.9
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "centralized-core high CPU usage"
+        description: "centralized-core CPU usage is above 90% for more than 5 minutes."
