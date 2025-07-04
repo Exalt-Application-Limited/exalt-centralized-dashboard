@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exalt Executive Command Center - Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .metric-title {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .metric-change {
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .positive { color: #4caf50; }
+        .negative { color: #f44336; }
+        
+        .domains-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .domain-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .domain-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .domain-icon {
+            font-size: 2rem;
+            margin-right: 12px;
+        }
+        
+        .domain-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        
+        .domain-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .domain-metric {
+            text-align: center;
+        }
+        
+        .domain-metric-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        
+        .domain-metric-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .status-healthy { background: #e8f5e8; color: #2e7d32; }
+        .status-warning { background: #fff3e0; color: #f57c00; }
+        
+        .login-info {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .feature-list {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 20px;
+        }
+        
+        .feature-list h3 {
+            margin-bottom: 16px;
+            color: #333;
+        }
+        
+        .feature-list ul {
+            list-style: none;
+        }
+        
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .feature-list li:before {
+            content: "✅ ";
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="header">
+            <h1>🎯 Exalt Executive Command Center</h1>
+            <p>Comprehensive Business Domain Management & Analytics</p>
+        </div>
+        
+        <!-- Key Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-title">Total Revenue</div>
+                <div class="metric-value" style="color: #2196F3;">$3.9M</div>
+                <div class="metric-change positive">↗ +18.5% growth</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-title">Total Users</div>
+                <div class="metric-value" style="color: #4CAF50;">72.6K</div>
+                <div class="metric-change positive">↗ +12.3% growth</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-title">Total Orders</div>
+                <div class="metric-value" style="color: #FF9800;">25.4K</div>
+                <div class="metric-change positive">↗ +8.7% growth</div>
+            </div>
+            
+            <div class="metric-card">
+                <div class="metric-title">System Uptime</div>
+                <div class="metric-value" style="color: #9C27B0;">99.92%</div>
+                <div class="metric-change positive">↗ +0.5% improvement</div>
+            </div>
+        </div>
+        
+        <!-- Business Domains -->
+        <div class="domains-grid">
+            <div class="domain-card">
+                <div class="domain-header">
+                    <div class="domain-icon">🏢</div>
+                    <div>
+                        <div class="domain-title">Social Commerce</div>
+                        <span class="status-badge status-healthy">Operational</span>
+                    </div>
+                </div>
+                <div class="domain-metrics">
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Revenue</div>
+                        <div class="domain-metric-value">$2.34M</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Users</div>
+                        <div class="domain-metric-value">45.2K</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Growth</div>
+                        <div class="domain-metric-value positive">+12.5%</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Services</div>
+                        <div class="domain-metric-value">27/27</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="domain-card">
+                <div class="domain-header">
+                    <div class="domain-icon">🏭</div>
+                    <div>
+                        <div class="domain-title">Warehousing</div>
+                        <span class="status-badge status-healthy">Operational</span>
+                    </div>
+                </div>
+                <div class="domain-metrics">
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Revenue</div>
+                        <div class="domain-metric-value">$890K</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Users</div>
+                        <div class="domain-metric-value">8.5K</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Growth</div>
+                        <div class="domain-metric-value positive">+18.2%</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Services</div>
+                        <div class="domain-metric-value">29/30</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="domain-card">
+                <div class="domain-header">
+                    <div class="domain-icon">🚚</div>
+                    <div>
+                        <div class="domain-title">Courier Services</div>
+                        <span class="status-badge status-warning">Degraded</span>
+                    </div>
+                </div>
+                <div class="domain-metrics">
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Revenue</div>
+                        <div class="domain-metric-value">$560K</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Users</div>
+                        <div class="domain-metric-value">15.7K</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Growth</div>
+                        <div class="domain-metric-value negative">-2.1%</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Services</div>
+                        <div class="domain-metric-value">30/32</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="domain-card">
+                <div class="domain-header">
+                    <div class="domain-icon">🚛</div>
+                    <div>
+                        <div class="domain-title">Haulage Logistics</div>
+                        <span class="status-badge status-healthy">Operational</span>
+                    </div>
+                </div>
+                <div class="domain-metrics">
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Revenue</div>
+                        <div class="domain-metric-value">$125K</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Users</div>
+                        <div class="domain-metric-value">3.2K</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Growth</div>
+                        <div class="domain-metric-value positive">+45.3%</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Services</div>
+                        <div class="domain-metric-value">18/18</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="domain-card">
+                <div class="domain-header">
+                    <div class="domain-icon">⚙️</div>
+                    <div>
+                        <div class="domain-title">Shared Infrastructure</div>
+                        <span class="status-badge status-healthy">Operational</span>
+                    </div>
+                </div>
+                <div class="domain-metrics">
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Uptime</div>
+                        <div class="domain-metric-value">99.95%</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Response</div>
+                        <div class="domain-metric-value">145ms</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Health</div>
+                        <div class="domain-metric-value positive">98.7%</div>
+                    </div>
+                    <div class="domain-metric">
+                        <div class="domain-metric-label">Services</div>
+                        <div class="domain-metric-value">23/23</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Features -->
+        <div class="feature-list">
+            <h3>🚀 Complete Implementation Features</h3>
+            <ul>
+                <li><strong>Professional Login System</strong> - Executive-grade authentication with demo access</li>
+                <li><strong>Real-time Dashboard</strong> - Live business metrics across all domains</li>
+                <li><strong>Domain Management</strong> - Comprehensive oversight of 5 business domains</li>
+                <li><strong>Advanced Analytics</strong> - Business intelligence with interactive charts</li>
+                <li><strong>Stakeholder Management</strong> - Board-level user access controls</li>
+                <li><strong>System Monitoring</strong> - Real-time health across 153 microservices</li>
+                <li><strong>Global Performance</strong> - Revenue, growth, and regional analytics</li>
+                <li><strong>Executive Settings</strong> - Multi-region configuration and security</li>
+                <li><strong>Professional UI</strong> - Material-UI enterprise design system</li>
+                <li><strong>Responsive Design</strong> - Desktop, tablet, and mobile optimized</li>
+                <li><strong>Production Ready</strong> - Deployable to Alibaba Cloud immediately</li>
+                <li><strong>Comprehensive Navigation</strong> - 15+ pages with full functionality</li>
+            </ul>
+        </div>
+        
+        <!-- Login Information -->
+        <div class="login-info">
+            <h3>🔑 Demo Access Information</h3>
+            <p><strong>Full React Application URL:</strong> http://localhost:3000 (when npm server is running)</p>
+            <p><strong>Username:</strong> executive@exalt.com</p>
+            <p><strong>Password:</strong> demo123</p>
+            <br>
+            <p><strong>Note:</strong> This HTML preview shows the data and layout. The full React application includes:</p>
+            <p>Interactive charts, real-time updates, navigation between pages, form handling, and all advanced features.</p>
+        </div>
+    </div>
+</body>
+</html>

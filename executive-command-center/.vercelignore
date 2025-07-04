@@ -1,0 +1,19 @@
+# Vercel ignore file
+node_modules
+.git
+.gitignore
+README.md
+.env.local
+.env.development
+.env.staging
+*.log
+.DS_Store
+coverage
+.vscode
+.idea
+*.swp
+*.swo
+*~
+setup-and-run.bat
+setup-and-run.sh
+deploy-vercel.sh
