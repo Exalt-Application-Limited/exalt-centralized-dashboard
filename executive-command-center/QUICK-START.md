@@ -3,7 +3,7 @@
 ## ⚡ **Super Easy Setup:**
 
 ### **Option 1: Windows Users**
-1. **Navigate to**: `Desktop/Exalt-Application-Limited/CLEAN-SOCIAL-ECOMMERCE-ECOSYSTEM/centralized-dashboard/executive-command-center/`
+1. **Navigate to**: `Desktop/Gogidix-Application-Limited/CLEAN-SOCIAL-ECOMMERCE-ECOSYSTEM/centralized-dashboard/executive-command-center/`
 2. **Double-click**: `setup-and-run.bat`
 3. **Wait**: 5-10 minutes for installation
 4. **Access**: http://localhost:3000 (opens automatically)
@@ -12,7 +12,7 @@
 1. **Open Terminal**
 2. **Navigate to**: 
    ```bash
-   cd ~/Desktop/Exalt-Application-Limited/CLEAN-SOCIAL-ECOMMERCE-ECOSYSTEM/centralized-dashboard/executive-command-center/
+   cd ~/Desktop/Gogidix-Application-Limited/CLEAN-SOCIAL-ECOMMERCE-ECOSYSTEM/centralized-dashboard/executive-command-center/
    ```
 3. **Run**: `./setup-and-run.sh`
 4. **Access**: http://localhost:3000
@@ -31,7 +31,7 @@ npm start
 
 ## 🔑 **Demo Login:**
 - **URL**: http://localhost:3000
-- **Username**: `executive@exalt.com`
+- **Username**: `executive@gogidix.com`
 - **Password**: `demo123`
 
 ## 🎯 **What You'll See:**

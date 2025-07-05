@@ -72,7 +72,7 @@ import { RealTimeSimulator } from '../services/RealTimeSimulator';
 const App = () => {
   return (
     <RealTimeContext.Provider value={{
-      dataSource: 'ws://analytics-api.exalt.com/realtime',
+      dataSource: 'ws://analytics-api.gogidix.com/realtime',
       updateInterval: 5000,
       autoReconnect: true
     }}>

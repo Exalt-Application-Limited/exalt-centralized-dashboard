@@ -56,7 +56,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: mvn verify sonar:sonar -Dsonar.projectKey=exalt_centralized-dashboard-production
+      run: mvn verify sonar:sonar -Dsonar.projectKey=gogidix_centralized-dashboard-production
       working-directory: centralized-dashboard/centralized-dashboard-production
       
     - name: Check code coverage

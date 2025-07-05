@@ -36,8 +36,8 @@ To use the Centralized Performance Metrics service:
 
 ### Defining Custom KPIs
 ```java
-import com.exalt.performancemetrics.service.KPITrackingService;
-import com.exalt.performancemetrics.model.KPIDefinition;
+import com.gogidix.performancemetrics.service.KPITrackingService;
+import com.gogidix.performancemetrics.model.KPIDefinition;
 
 @Service
 public class BusinessKPIService {
@@ -56,7 +56,7 @@ public class BusinessKPIService {
             .warningThreshold(BigDecimal.valueOf(75.0))
             .criticalThreshold(BigDecimal.valueOf(65.0))
             .calculationFrequency(CalculationFrequency.HOURLY)
-            .businessOwner("sales-team@exalt.com")
+            .businessOwner("sales-team@gogidix.com")
             .build();
     }
 }
@@ -64,8 +64,8 @@ public class BusinessKPIService {
 
 ### Performance Analysis and Benchmarking
 ```java
-import com.exalt.performancemetrics.service.PerformanceAnalysisService;
-import com.exalt.performancemetrics.dto.PerformanceReport;
+import com.gogidix.performancemetrics.service.PerformanceAnalysisService;
+import com.gogidix.performancemetrics.dto.PerformanceReport;
 
 @Service
 public class PerformanceReportingService {
@@ -99,8 +99,8 @@ public class PerformanceReportingService {
 
 ### Real-time Performance Monitoring
 ```java
-import com.exalt.performancemetrics.service.MetricCalculationEngine;
-import com.exalt.performancemetrics.model.PerformanceMetric;
+import com.gogidix.performancemetrics.service.MetricCalculationEngine;
+import com.gogidix.performancemetrics.model.PerformanceMetric;
 
 @Component
 public class RealTimePerformanceMonitor {
@@ -144,8 +144,8 @@ public class RealTimePerformanceMonitor {
 
 ### Predictive Analytics and Forecasting
 ```java
-import com.exalt.performancemetrics.service.PredictiveAnalyticsService;
-import com.exalt.performancemetrics.model.PerformanceForecast;
+import com.gogidix.performancemetrics.service.PredictiveAnalyticsService;
+import com.gogidix.performancemetrics.model.PerformanceForecast;
 
 @Service
 public class PerformanceForecastingService {
@@ -187,8 +187,8 @@ public class PerformanceForecastingService {
 
 ### Dynamic Threshold Management
 ```java
-import com.exalt.performancemetrics.service.ThresholdManagementService;
-import com.exalt.performancemetrics.model.PerformanceThreshold;
+import com.gogidix.performancemetrics.service.ThresholdManagementService;
+import com.gogidix.performancemetrics.model.PerformanceThreshold;
 
 @Service
 public class AdaptiveThresholdService {

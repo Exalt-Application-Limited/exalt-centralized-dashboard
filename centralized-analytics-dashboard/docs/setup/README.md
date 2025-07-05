@@ -648,4 +648,4 @@ imagemin src/assets/images/* --out-dir=src/assets/images/optimized
 - **Documentation**: `/docs` directory
 - **Issues**: GitHub Issues
 - **Team Chat**: Slack #centralized-dashboard
-- **Email**: dashboard-team@exalt.com
+- **Email**: dashboard-team@gogidix.com

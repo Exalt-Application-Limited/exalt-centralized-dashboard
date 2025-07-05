@@ -112,7 +112,7 @@ management:
 logging:
   level:
     root: INFO
-    com.exalt.centralizeddashboard: INFO
+    com.gogidix.centralizeddashboard: INFO
     org.springframework.security: WARN
   file:
     name: /var/log/centralized-core/application.log
@@ -688,7 +688,7 @@ tail -100 /var/log/centralized-core/application.log | grep ERROR >> /tmp/mainten
 curl http://localhost:8080/actuator/circuitbreakers >> /tmp/maintenance.log
 
 # Send report
-mail -s "Centralized Core Daily Report" admin-team@exalt.com < /tmp/maintenance.log
+mail -s "Centralized Core Daily Report" admin-team@gogidix.com < /tmp/maintenance.log
 ```
 
 #### Weekly Tasks
@@ -782,10 +782,10 @@ kubectl patch service centralized-core \
 
 ### Emergency Contacts
 
-- **Primary On-Call**: +1-555-0123 (core-team-primary@exalt.com)
-- **Secondary On-Call**: +1-555-0124 (core-team-secondary@exalt.com)
-- **DevOps Team**: devops-emergency@exalt.com
-- **Database Team**: dba-team@exalt.com
+- **Primary On-Call**: +1-555-0123 (core-team-primary@gogidix.com)
+- **Secondary On-Call**: +1-555-0124 (core-team-secondary@gogidix.com)
+- **DevOps Team**: devops-emergency@gogidix.com
+- **Database Team**: dba-team@gogidix.com
 
 ---
 

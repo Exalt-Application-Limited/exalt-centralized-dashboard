@@ -9,7 +9,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
-	<groupId>com.exalt.centralizeddashboard</groupId>
+	<groupId>com.gogidix.centralizeddashboard</groupId>
 	<artifactId>centralized-performance-metrics</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>centralized-performance-metrics</name>

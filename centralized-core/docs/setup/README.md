@@ -200,7 +200,7 @@ security:
 # Logging configuration
 logging:
   level:
-    com.exalt.centralizeddashboard: DEBUG
+    com.gogidix.centralizeddashboard: DEBUG
     org.springframework.security: DEBUG
     org.springframework.web: DEBUG
   pattern:
@@ -807,7 +807,7 @@ jstat -gc <PID>
 
 ```bash
 # Enable debug logging
-export LOGGING_LEVEL_COM_EXALT_CENTRALIZEDDASHBOARD=DEBUG
+export LOGGING_LEVEL_COM_GOGIDIX_CENTRALIZEDDASHBOARD=DEBUG
 
 # Enable SQL logging
 export SPRING_JPA_SHOW_SQL=true
@@ -851,4 +851,4 @@ export JAVA_OPTS="
 - **API Reference**: `http://localhost:8080/swagger-ui.html`
 - **Issues**: GitHub Issues
 - **Team Chat**: Slack #centralized-dashboard
-- **Email**: core-team@exalt.com
+- **Email**: core-team@gogidix.com

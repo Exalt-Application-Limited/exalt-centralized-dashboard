@@ -21,9 +21,9 @@ This document provides comprehensive operational procedures for the Centralized 
 
 | Environment | Purpose | URL | Auto-Deploy | CDN |
 |-------------|---------|-----|-------------|-----|
-| Development | Feature development | `https://dev-analytics.dashboard.exalt.com` | Yes (dev branch) | Disabled |
-| Staging | Pre-production testing | `https://staging-analytics.dashboard.exalt.com` | Yes (main branch) | Enabled |
-| Production | Live system | `https://analytics.dashboard.exalt.com` | Manual approval | Enabled |
+| Development | Feature development | `https://dev-analytics.dashboard.gogidix.com` | Yes (dev branch) | Disabled |
+| Staging | Pre-production testing | `https://staging-analytics.dashboard.gogidix.com` | Yes (main branch) | Enabled |
+| Production | Live system | `https://analytics.dashboard.gogidix.com` | Manual approval | Enabled |
 
 ### Frontend Deployment Pipeline
 
@@ -127,7 +127,7 @@ aws cloudfront create-invalidation \
   --paths "/*"
 
 # Verify deployment
-curl -I https://analytics.dashboard.exalt.com
+curl -I https://analytics.dashboard.gogidix.com
 ```
 
 ### Blue-Green Deployment
@@ -203,7 +203,7 @@ Sentry.init({
     new BrowserTracing({
       tracingOrigins: [
         process.env.REACT_APP_API_BASE_URL,
-        /^https:\/\/analytics\.dashboard\.exalt\.com\/api/
+        /^https:\/\/analytics\.dashboard\.gogidix\.com\/api/
       ]
     })
   ],
@@ -324,7 +324,7 @@ npm audit --audit-level high
 
 # Performance audit
 lighthouse --chrome-flags="--headless" \
-  https://analytics.dashboard.exalt.com \
+  https://analytics.dashboard.gogidix.com \
   --output html --output-path ./reports/lighthouse.html
 ```
 
@@ -412,7 +412,7 @@ module.exports = {
 
 ```bash
 # Step 1: Check CDN status
-curl -I https://analytics.dashboard.exalt.com
+curl -I https://analytics.dashboard.gogidix.com
 aws cloudfront get-distribution --id E1234567890
 
 # Step 2: Check origin server
@@ -453,7 +453,7 @@ git log --oneline --since="24 hours ago"
 ```bash
 # Step 1: Run Lighthouse audit
 lighthouse --chrome-flags="--headless" \
-  https://analytics.dashboard.exalt.com \
+  https://analytics.dashboard.gogidix.com \
   --output json --output-path /tmp/lighthouse.json
 
 # Step 2: Check bundle size
@@ -750,10 +750,10 @@ function DashboardComponent() {
 
 | Role | Name | Phone | Email | Escalation |
 |------|------|-------|-------|------------|
-| Frontend Lead | [NAME] | [PHONE] | frontend@exalt.com | Primary |
-| DevOps Engineer | [NAME] | [PHONE] | devops@exalt.com | Infrastructure |
-| UX Team Lead | [NAME] | [PHONE] | ux@exalt.com | User Experience |
-| Security Team | [NAME] | [PHONE] | security@exalt.com | Security Issues |
+| Frontend Lead | [NAME] | [PHONE] | frontend@gogidix.com | Primary |
+| DevOps Engineer | [NAME] | [PHONE] | devops@gogidix.com | Infrastructure |
+| UX Team Lead | [NAME] | [PHONE] | ux@gogidix.com | User Experience |
+| Security Team | [NAME] | [PHONE] | security@gogidix.com | Security Issues |
 
 ## Documentation Updates
 

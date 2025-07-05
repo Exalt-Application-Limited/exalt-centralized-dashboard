@@ -5,7 +5,7 @@
 ### ✅ Development Environment Check
 - [ ] `npm install` completes without errors
 - [ ] `npm start` launches successfully at http://localhost:3000
-- [ ] Login works with demo credentials (executive@exalt.com / demo123)
+- [ ] Login works with demo credentials (executive@gogidix.com / demo123)
 - [ ] All navigation links are functional
 - [ ] No console errors in browser dev tools
 - [ ] `npm run build` creates optimized production build

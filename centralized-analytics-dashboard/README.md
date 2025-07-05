@@ -93,7 +93,7 @@ REACT_APP_ENABLE_ANALYTICS=true
 REACT_APP_ENABLE_MOCK_DATA=false
 
 # Authentication
-REACT_APP_AUTH_DOMAIN=auth.exalt.com
+REACT_APP_AUTH_DOMAIN=auth.gogidix.com
 REACT_APP_AUTH_CLIENT_ID=analytics-dashboard
 
 # Internationalization
@@ -492,11 +492,11 @@ export REACT_APP_ENABLE_REDUX_DEVTOOLS=true
 ## Contact
 
 - **Team**: Analytics Dashboard Team
-- **Email**: analytics-dashboard@exalt.com
+- **Email**: analytics-dashboard@gogidix.com
 - **Slack Channel**: #centralized-analytics-dashboard
-- **Documentation**: https://docs.dashboard.exalt.com
-- **Support**: https://support.dashboard.exalt.com
+- **Documentation**: https://docs.dashboard.gogidix.com
+- **Support**: https://support.dashboard.gogidix.com
 
 ## License
 
-Copyright (c) 2024 Exalt Application Limited. All rights reserved.
+Copyright (c) 2024 Gogidix Application Limited. All rights reserved.

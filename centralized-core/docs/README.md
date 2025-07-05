@@ -49,8 +49,8 @@ To use the Centralized Dashboard Core service, follow these steps:
 
 ### Creating a Custom Domain Data Collector
 ```java
-import com.exalt.centralizeddashboard.core.collection.DomainDataCollector;
-import com.exalt.centralizeddashboard.core.collection.DomainMetric;
+import com.gogidix.centralizeddashboard.core.collection.DomainDataCollector;
+import com.gogidix.centralizeddashboard.core.collection.DomainMetric;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -89,8 +89,8 @@ public class CustomDomainDataCollector extends DomainDataCollector {
 
 ### Implementing Cross-Domain Analytics
 ```java
-import com.exalt.centralizeddashboard.core.service.CrossDomainDashboardService;
-import com.exalt.centralizeddashboard.core.model.CrossDomainInsight;
+import com.gogidix.centralizeddashboard.core.service.CrossDomainDashboardService;
+import com.gogidix.centralizeddashboard.core.model.CrossDomainInsight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -121,8 +121,8 @@ public class BusinessIntelligenceService {
 
 ### Custom KPI Implementation
 ```java
-import com.exalt.centralizeddashboard.core.service.KPIService;
-import com.exalt.centralizeddashboard.core.model.DashboardKPI;
+import com.gogidix.centralizeddashboard.core.service.KPIService;
+import com.gogidix.centralizeddashboard.core.model.DashboardKPI;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -160,8 +160,8 @@ public class RevenueKPIService {
 
 ### Enhanced Analytics Integration
 ```java
-import com.exalt.centralizeddashboard.core.integration.enhanced.EnhancedDomainAnalyticsService;
-import com.exalt.centralizeddashboard.core.model.CorrelationResult;
+import com.gogidix.centralizeddashboard.core.integration.enhanced.EnhancedDomainAnalyticsService;
+import com.gogidix.centralizeddashboard.core.model.CorrelationResult;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -195,8 +195,8 @@ public class PredictiveAnalyticsService {
 
 ### REST Controller Implementation
 ```java
-import com.exalt.centralizeddashboard.core.controller.DashboardController;
-import com.exalt.centralizeddashboard.core.dto.DashboardKPIDto;
+import com.gogidix.centralizeddashboard.core.controller.DashboardController;
+import com.gogidix.centralizeddashboard.core.dto.DashboardKPIDto;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -241,8 +241,8 @@ public class DashboardController {
 
 ### Event-Driven Architecture
 ```java
-import com.exalt.centralizeddashboard.core.events.CrossDomainEvent;
-import com.exalt.centralizeddashboard.core.events.CrossDomainEventPublisher;
+import com.gogidix.centralizeddashboard.core.events.CrossDomainEvent;
+import com.gogidix.centralizeddashboard.core.events.CrossDomainEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 

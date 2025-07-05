@@ -40,8 +40,8 @@ To use the Centralized Data Aggregation service, follow these steps:
 
 ### Creating Custom Data Aggregation
 ```java
-import com.exalt.centralizeddashboard.dataaggregation.service.DataAggregationService;
-import com.exalt.centralizeddashboard.dataaggregation.dto.AggregationRequest;
+import com.gogidix.centralizeddashboard.dataaggregation.service.DataAggregationService;
+import com.gogidix.centralizeddashboard.dataaggregation.dto.AggregationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,8 +75,8 @@ public class CustomAggregationService {
 
 ### Implementing Analytics Event Processing
 ```java
-import com.exalt.centralizeddashboard.analytics.aggregation.model.AnalyticsEvent;
-import com.exalt.centralizeddashboard.analytics.aggregation.service.AnalyticsService;
+import com.gogidix.centralizeddashboard.analytics.aggregation.model.AnalyticsEvent;
+import com.gogidix.centralizeddashboard.analytics.aggregation.service.AnalyticsService;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -113,7 +113,7 @@ public class AnalyticsEventProcessor {
 
 ### Scheduled Data Aggregation
 ```java
-import com.exalt.centralizeddashboard.analytics.aggregation.scheduler.DataAggregationScheduler;
+import com.gogidix.centralizeddashboard.analytics.aggregation.scheduler.DataAggregationScheduler;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -156,8 +156,8 @@ public class CustomDataAggregationScheduler {
 
 ### Time Series Data Processing
 ```java
-import com.exalt.centralizeddashboard.dataaggregation.dto.TimeSeriesData;
-import com.exalt.centralizeddashboard.analytics.aggregation.model.TimeGranularity;
+import com.gogidix.centralizeddashboard.dataaggregation.dto.TimeSeriesData;
+import com.gogidix.centralizeddashboard.analytics.aggregation.model.TimeGranularity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -200,7 +200,7 @@ public class TimeSeriesAnalyticsService {
 
 ### Cache-Optimized Aggregation
 ```java
-import com.exalt.centralizeddashboard.dataaggregation.repository.AggregationCacheRepository;
+import com.gogidix.centralizeddashboard.dataaggregation.repository.AggregationCacheRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;

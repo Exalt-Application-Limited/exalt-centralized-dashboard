@@ -70,8 +70,8 @@ We've already created environment files:
    
    **Development Environment**:
    ```
-   REACT_APP_API_BASE_URL=https://api-dev.exalt.com
-   REACT_APP_AUTH_DOMAIN=dev.exalt.com
+   REACT_APP_API_BASE_URL=https://api-dev.gogidix.com
+   REACT_APP_AUTH_DOMAIN=dev.gogidix.com
    REACT_APP_ENVIRONMENT=development
    REACT_APP_VERSION=1.0.0-dev
    REACT_APP_ENABLE_ANALYTICS=false
@@ -80,8 +80,8 @@ We've already created environment files:
 
    **Staging Environment**:
    ```
-   REACT_APP_API_BASE_URL=https://api-staging.exalt.com
-   REACT_APP_AUTH_DOMAIN=staging.exalt.com
+   REACT_APP_API_BASE_URL=https://api-staging.gogidix.com
+   REACT_APP_AUTH_DOMAIN=staging.gogidix.com
    REACT_APP_ENVIRONMENT=staging
    REACT_APP_VERSION=1.0.0-staging
    REACT_APP_ENABLE_ANALYTICS=true
@@ -93,19 +93,19 @@ We've already created environment files:
 ### Development URL
 Your app will be available at:
 ```
-https://exalt-executive-command-center-dev.vercel.app
+https://gogidix-executive-command-center-dev.vercel.app
 ```
 
 ### Staging URL
 ```
-https://exalt-executive-command-center-staging.vercel.app
+https://gogidix-executive-command-center-staging.vercel.app
 ```
 
 ### Custom Domain (Optional)
 1. Go to Vercel Dashboard → Domains
 2. Add custom domain:
-   - Development: `dev-dashboard.exalt.com`
-   - Staging: `staging-dashboard.exalt.com`
+   - Development: `dev-dashboard.gogidix.com`
+   - Staging: `staging-dashboard.gogidix.com`
 
 ## Step 4: Deployment Scripts
 

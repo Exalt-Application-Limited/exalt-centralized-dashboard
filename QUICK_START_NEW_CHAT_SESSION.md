@@ -12,7 +12,7 @@
 
 ## NEXT STEPS FOR NEW CHAT
 1. **Fix centralized-dashboard test failures immediately**
-   - Navigate to: `/mnt/c/Users/frich/Desktop/Exalt-Application-Limited/centralized-dashboard`
+   - Navigate to: `/mnt/c/Users/frich/Desktop/Gogidix-Application-Limited/centralized-dashboard`
    - Analyze: centralized-core module test failures (42 tests: 1 failure, 21 errors)
    - Fix: Test code/configuration issues
    - Verify: Local build passes before pushing
@@ -29,5 +29,5 @@
 
 ## WORKING DIRECTORY
 ```bash
-cd /mnt/c/Users/frich/Desktop/Exalt-Application-Limited/centralized-dashboard
+cd /mnt/c/Users/frich/Desktop/Gogidix-Application-Limited/centralized-dashboard
 ```
