@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     
-    <groupId>com.exalt</groupId>
+    <groupId>com.gogidix</groupId>
     <artifactId>centralized-dashboard</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>

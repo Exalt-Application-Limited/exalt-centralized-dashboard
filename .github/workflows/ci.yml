@@ -22,8 +22,7 @@ jobs:
     
     - name: Build and test with Maven
       run: |
-        chmod +x ./mvnw
-          ./mvnw clean test
+        mvn clean test
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
