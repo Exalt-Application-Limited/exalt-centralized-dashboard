@@ -50,45 +50,64 @@ jobs:
         run: |
           echo "🔍 Scanning centralized-dashboard domain services..."
           
-          # Java Services (Spring Boot with pom.xml)
+          # Java Services (Spring Boot with pom.xml) - Domain specific only
           java_services=""
-          for dir in */; do
-            if [ -f "${dir}pom.xml" ]; then
+          for dir in centralized-*/; do
+            if [ -f "${dir}pom.xml" ] && [ -d "$dir" ]; then
               service_name=$(basename "$dir")
-              if [ -z "$java_services" ]; then
-                java_services="$service_name"
-              else
-                java_services="$java_services,$service_name"
+              # Only include centralized-dashboard domain services
+              if [[ "$service_name" == centralized-* ]] && [[ ! "$service_name" == *-production ]] && [[ ! "$service_name" == *-staging ]] && [[ ! "$service_name" == *-shared ]]; then
+                if [ -z "$java_services" ]; then
+                  java_services="$service_name"
+                else
+                  java_services="$java_services,$service_name"
+                fi
+                echo "✅ Java Service: $service_name"
               fi
-              echo "✅ Java Service: $service_name"
             fi
           done
           
-          # Node.js Services (React/TypeScript with package.json)
+          # Node.js Services (React/TypeScript with package.json) - Domain specific only
           nodejs_services=""
-          for dir in */; do
-            if [ -f "${dir}package.json" ] && [ ! -f "${dir}pom.xml" ]; then
+          for dir in centralized-*/; do
+            if [ -f "${dir}package.json" ] && [ ! -f "${dir}pom.xml" ] && [ -d "$dir" ]; then
               service_name=$(basename "$dir")
-              if [ -z "$nodejs_services" ]; then
-                nodejs_services="$service_name"
-              else
-                nodejs_services="$nodejs_services,$service_name"
+              # Only include centralized-dashboard domain Node.js services
+              if [[ "$service_name" == centralized-* ]]; then
+                if [ -z "$nodejs_services" ]; then
+                  nodejs_services="$service_name"
+                else
+                  nodejs_services="$nodejs_services,$service_name"
+                fi
+                echo "✅ Node.js Service: $service_name"
               fi
-              echo "✅ Node.js Service: $service_name"
             fi
           done
           
-          # Infrastructure Services (K8s configs only)
+          # Add executive-command-center (special case)
+          if [ -f "executive-command-center/package.json" ] && [ -d "executive-command-center" ]; then
+            if [ -z "$nodejs_services" ]; then
+              nodejs_services="executive-command-center"
+            else
+              nodejs_services="$nodejs_services,executive-command-center"
+            fi
+            echo "✅ Node.js Service: executive-command-center"
+          fi
+          
+          # Infrastructure Services (K8s configs only) - Domain specific only
           infra_services=""
-          for dir in */; do
-            if [ -d "${dir}k8s" ] && [ ! -f "${dir}package.json" ] && [ ! -f "${dir}pom.xml" ]; then
+          for dir in centralized-dashboard-*/; do
+            if [ -d "${dir}k8s" ] && [ ! -f "${dir}package.json" ] && [ ! -f "${dir}pom.xml" ] && [ -d "$dir" ]; then
               service_name=$(basename "$dir")
-              if [ -z "$infra_services" ]; then
-                infra_services="$service_name"
-              else
-                infra_services="$infra_services,$service_name"
+              # Only include centralized-dashboard infrastructure services
+              if [[ "$service_name" == centralized-dashboard-* ]]; then
+                if [ -z "$infra_services" ]; then
+                  infra_services="$service_name"
+                else
+                  infra_services="$infra_services,$service_name"
+                fi
+                echo "✅ Infrastructure Service: $service_name"
               fi
-              echo "✅ Infrastructure Service: $service_name"
             fi
           done
           
@@ -135,10 +154,12 @@ jobs:
           echo "🔨 Building Java services in centralized-dashboard domain..."
           
           # Build parent POM first
-          if [ -f "pom.xml" ]; then
+          if [ -f "pom.xml" ] && [ -f "mvnw" ]; then
             echo "Building parent POM..."
             chmod +x ./mvnw
             ./mvnw clean compile -q -DskipTests
+          else
+            echo "Parent POM build skipped - using service-level builds"
           fi
           
           # Build each Java service
@@ -196,7 +217,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          # Remove cache since package-lock.json is in subdirectories
           
       - name: Build Node.js Services
         run: |
