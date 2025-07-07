@@ -65,9 +65,10 @@ jobs:
               echo "Adding SonarCloud configuration to $service_name..."
               
               # Add sonar properties if not present
-              cat >> pom.xml << EOF
+              REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+              cat >> pom.xml << 'EOF'
     <properties>
-        <sonar.projectKey>${{ env.GITHUB_ORG }}_$(echo "${{ github.repository }}" | cut -d'/' -f2)_${service_name}</sonar.projectKey>
+        <sonar.projectKey>gogidix-technologies_centralized-dashboard</sonar.projectKey>
         <sonar.organization>gogidix-technologies</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>

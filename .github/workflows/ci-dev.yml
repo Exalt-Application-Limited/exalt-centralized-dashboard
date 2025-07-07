@@ -4,9 +4,10 @@ on:
   workflow_dispatch:
 
 env:
-  GCP_PROJECT_ID: gogidix-technologies
-  GKE_CLUSTER_NAME: gogidix-dev-cluster
-  GCP_REGION: us-central1
+  # TODO: Update these values based on your actual GCP setup
+  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GKE_CLUSTER_NAME: ${{ secrets.GKE_CLUSTER_NAME }}
+  GCP_REGION: ${{ secrets.GCP_REGION }}
   EUREKA_URL: http://localhost:8761
   NAMESPACE: gogidix-dev
 
@@ -121,7 +122,7 @@ spec:
         image: ${{ github.event.repository.name }}:latest
         ports:
         - containerPort: 8080
-EOF
+          EOF
           fi
 
       - name: Deploy to GKE Dev
