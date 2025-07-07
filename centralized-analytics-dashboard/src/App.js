@@ -5,7 +5,7 @@ import { CssBaseline, Box } from '@mui/material';
 import { Provider } from 'react-redux';
 import { store } from './store';
 
-import { RealTimeProvider, DEFAULT_WEBSOCKET_CONFIG } from './services/RealTimeContext';
+import { RealTimeProvider, DEFAULT_WEBSOCKET_CONFIG } from './services/RealTimeContext.tsx';
 import AppLayout from './layouts/AppLayout';
 import Dashboard from './pages/dashboard/Dashboard';
 import RealTimeDashboard from './pages/dashboard/RealTimeDashboard';
