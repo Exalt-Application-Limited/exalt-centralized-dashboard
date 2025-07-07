@@ -143,4 +143,4 @@ spec:
       - name: Health Check
         run: |
           kubectl get pods -l app=${{ github.event.repository.name }} -n ${{ env.NAMESPACE }} || echo "Health check completed"
-          echo "✅ Deployment pipeline completed for ${{ github.event.repository.name }}"
+          echo "OK Deployment pipeline completed for ${{ github.event.repository.name }}"
