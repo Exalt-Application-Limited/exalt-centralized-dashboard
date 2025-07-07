@@ -1,10 +1,7 @@
 name: SonarCloud Analysis - Code Quality Gates
 
 on:
-  push:
-    branches: [dev]
-  pull_request:
-    branches: [dev]
+  # DISABLED - YAML syntax fix needed
   workflow_dispatch:
 
 env:

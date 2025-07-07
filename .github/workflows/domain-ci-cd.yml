@@ -230,7 +230,7 @@ jobs:
               cd "$service"
               
               # Install dependencies and build
-              if npm ci && npm run build; then
+              if npm install --silent && npm run build --silent; then
                 echo "✅ $service: BUILD SUCCESS"
               else
                 echo "❌ $service: BUILD FAILED"

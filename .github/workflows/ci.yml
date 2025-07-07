@@ -1,10 +1,8 @@
 name: Java CI with Maven
 
 on:
-  push:
-    branches: [ "main", "dev" ]
-  pull_request:
-    branches: [ "main", "dev" ]
+  # DISABLED - Use domain-ci-cd.yml instead
+  workflow_dispatch:
 
 jobs:
   build:

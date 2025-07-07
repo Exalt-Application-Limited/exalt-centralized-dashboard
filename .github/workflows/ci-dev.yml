@@ -1,13 +1,12 @@
 name: Development CI/CD Pipeline
 on:
-  push:
-    branches: [dev]
-  pull_request:
-    branches: [dev]
+  # DISABLED - Use domain-ci-cd.yml instead
+  workflow_dispatch:
 
 env:
-  AWS_REGION: us-east-1
-  EKS_CLUSTER_NAME: gogidix-dev-cluster
+  GCP_PROJECT_ID: gogidix-technologies
+  GKE_CLUSTER_NAME: gogidix-dev-cluster
+  GCP_REGION: us-central1
   EUREKA_URL: http://localhost:8761
   NAMESPACE: gogidix-dev
 
@@ -81,16 +80,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      - name: Update kubeconfig
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure kubectl for GKE
         run: |
-          aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
+          gcloud container clusters get-credentials ${{ env.GKE_CLUSTER_NAME }} --region ${{ env.GCP_REGION }} --project ${{ env.GCP_PROJECT_ID }}
 
       - name: Check Kubernetes manifests
         run: |
@@ -100,7 +100,8 @@ jobs:
           else
             echo "No Kubernetes manifests found, creating basic deployment"
             mkdir -p k8s/dev
-            echo "apiVersion: apps/v1
+            cat > k8s/dev/deployment.yaml <<EOF
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ${{ github.event.repository.name }}
@@ -119,10 +120,11 @@ spec:
       - name: ${{ github.event.repository.name }}
         image: ${{ github.event.repository.name }}:latest
         ports:
-        - containerPort: 8080" > k8s/dev/deployment.yaml
+        - containerPort: 8080
+EOF
           fi
 
-      - name: Deploy to EKS Dev
+      - name: Deploy to GKE Dev
         run: |
           # Apply Kubernetes manifests
           kubectl apply -f k8s/dev/ -n ${{ env.NAMESPACE }} || echo "Deployment attempted"
