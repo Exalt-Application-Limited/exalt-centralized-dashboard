@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 
 import { RealTimeProvider, DEFAULT_WEBSOCKET_CONFIG } from './services/RealTimeContext.tsx';
-import AppLayout from './layouts/AppLayout';
+import AppLayout from './layouts/AppLayout.tsx';
 import Dashboard from './pages/dashboard/Dashboard';
 import RealTimeDashboard from './pages/dashboard/RealTimeDashboard';
 import InventoryAnalytics from './pages/analytics/InventoryAnalytics';
