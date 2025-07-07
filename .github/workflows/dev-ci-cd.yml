@@ -194,7 +194,14 @@ jobs:
             fi
             
             # Build with Maven (development profile)
-            if mvn clean compile package -DskipTests -q -Dspring.profiles.active=development; then
+            if [ ! -x "./mvnw" ] && [ -f "./mvnw" ]; then
+              chmod +x ./mvnw
+            elif [ ! -f "./mvnw" ]; then
+                echo "Error: ./mvnw not found"
+                continue
+            fi
+
+            if ./mvnw -f "$pom" clean compile package -DskipTests -q -Dspring.profiles.active=development; then
               echo "✅ $service_name built successfully"
             else
               echo "❌ $service_name build failed"
